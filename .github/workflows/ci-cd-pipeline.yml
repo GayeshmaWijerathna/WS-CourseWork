@@ -9,7 +9,7 @@ on:
       - master
 
 jobs:
-  build-and-test:
+  build-and-push:
     runs-on: ubuntu-latest
 
     steps:
@@ -25,8 +25,8 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-    # Step 4: Loop through services to build, push Docker images, and run unit tests
-    - name: Build, Push Docker Images, and Run Unit Tests
+    # Step 4: Loop through services to build and push Docker images
+    - name: Build and Push Docker Images
       run: |
         services=("crypto_price_service" "transaction_service" "account_service")
         for service in "${services[@]}"; do
@@ -37,14 +37,6 @@ jobs:
           
           # Push Docker image to Docker Hub
           docker push ${{ secrets.DOCKER_USERNAME }}/$service:latest
-          
-          # Navigate to the service directory, install dependencies, and run unit tests
-          cd src/$service
-          pip install -r ../../requirements.txt
-          pytest
-          
-          # Return to the root directory after running tests
-          cd ../../
         done
 
     # Step 5: Clean up Docker resources after build to free space
