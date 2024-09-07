@@ -28,7 +28,7 @@ jobs:
     # Step 4: Loop through services to build, push Docker images, and run unit tests
     - name: Build, Push Docker Images, and Run Unit Tests
       run: |
-        services=("crypto-price-service" "transaction-service" "account-service")
+        services=("crypto_price_service" "transaction_service" "account_service")
         for service in "${services[@]}"; do
           echo "Processing $service..."
           
