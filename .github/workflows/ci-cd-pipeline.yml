@@ -33,18 +33,18 @@ jobs:
           echo "Processing $service..."
           
           # Build Docker image for the service
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/$service:latest ./services/$service
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/$service:latest ./src/$service
           
           # Push Docker image to Docker Hub
           docker push ${{ secrets.DOCKER_USERNAME }}/$service:latest
           
           # Navigate to the service directory, install dependencies, and run unit tests
-          cd services/$service
-          pip install -r requirements.txt
+          cd src/$service
+          pip install -r ../../requirements.txt
           pytest
           
           # Return to the root directory after running tests
-          cd ../..
+          cd ../../
         done
 
     # Step 5: Clean up Docker resources after build to free space
